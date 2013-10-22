@@ -12,6 +12,8 @@
 #include "internal_buffer.h"
 #include "vector"
 
+const int INIT_BUFFER_NUMBER = 20;
+
 class BufferPool
 {
 public:
@@ -19,23 +21,24 @@ public:
     static BufferPool* get_buffer_pool();
     
     InternalBuffer* get_buffer();
-    InternalBuffer* return_buffer(int buffer_id);
+	int return_buffer(InternalBuffer* buffer);
 
 private:
+	int init();
     int next_available_buffer();
     int add_buffer();
     
 private:
-    static BufferPool* buffer_pool_instance = NULL;
+    static BufferPool* buffer_pool_instance;
     
     std::vector<InternalBuffer *> buffers;
     std::vector<bool> buffer_is_available;
+
     int buffer_number;
     int available_buffer_number;
     
 private:
-    BufferPool();
-    
+    BufferPool(int buffer_number);
 
 };
 

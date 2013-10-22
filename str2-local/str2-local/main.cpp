@@ -8,7 +8,8 @@
 
 #include <iostream>
 #include "string"
-#include "internal_buffer.h"
+#include "..\internal_buffer.h"
+#include "..\buffer_pool.h"
 
 int main(int argc, const char * argv[])
 {
@@ -18,7 +19,19 @@ int main(int argc, const char * argv[])
     char *str = "Hello, string~";
     buffer->write(str, strlen(str));
     
-    std::cout << "Hello, World!\n";
+	BufferPool *pool = BufferPool::get_buffer_pool();
+
+	int times = 24;
+	while(times--)
+	{
+		InternalBuffer *buffer = pool->get_buffer();
+
+		if(times == 3)
+			pool->return_buffer(buffer);
+		
+	}
+
+	system("pause");
     return 0;
 }
 
